@@ -1,0 +1,55 @@
+<html>
+<head>
+<title>a sample session of Gen-conf</title>
+</head>
+<body>
+<h2>Gen-conf sample session</h2>
+A sample sesson of <b>Gen-conf</b> is shown below:
+<hr>
+<pre>
+<b>
+$ Gen-conf
+    Welcome to the conf file generation procedure of Count 2.0
+
+    Note: The counter program does not handle sub-masking, nor does this
+    script. It creates a workable conf file for your host only, you have
+    to edit it by hand if you want to add other hosts. The file will have
+    enough comments in it to help you out. You also have to hand edit it
+    for wildcard ignoring.
+
+    First of all you must know your 
+        1) fully qualified hostname, for example,
+            foo.foobar.com
+
+        2) IP address of your host, for example, 
+            192.165.155.2 
+
+        3) If your host has any nickname defined, for example,
+            www.foobar.com. 
+
+        4) If you want to ignore access hits from your own host.
+
+Continue [y|n]? y
+        
+    No Error checking will be done with your hostname, therfore,
+    you better make sure you are entering the fully qualifed hostname.
+          
+* Enter your fully qualified hostname [no default]: warm.semcor.com
+
+    No Error checking will be done with your IP address, therfore,
+    you better make sure you are entering the correct IP address.
+
+* Enter your IP address [no default]: 192.160.166.1
+
+* Does your host have any nickname [y|Y]:? y
+* Enter your host's nickname [no default]: www.semcor.com
+* Do you want to ignore access hits from your own host [y|n]? y
+
+    Created conf file "count.conf"
+    Please look at it, you might want to edit it!
+</b>
+</pre>
+<hr>
+<a href="Count.html#steps"> Go back</a>
+</body>
+</htm>

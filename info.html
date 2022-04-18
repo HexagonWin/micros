@@ -1,0 +1,22 @@
+<!--#include virtual="/shared/header.html" -->
+<CENTER>
+ <H1>Server Statistics</H1>
+</CENTER>
+<HR>
+<H2>Server information<IMG SRC="http://micros/icons/poweredby.png" NOSAVE BORDER=0 align=ABSCENTER alt="(Powered by Rocky GNU/"><IMG SRC="/resources/tux.gif" NOSAVE BORDER=0 align=ABSCENTER alt="Linux)" height="42" width="42"></H2>
+
+Uptime : <!--#exec cmd="uptime" --><br>
+Host information : <!--#exec cmd="uname -a" --><br>
+
+<HR>
+ <pre>
+<!--#exec cmd="figlet MicroS SERVER" -->
+ </pre>
+ <hr>
+ <pre>
+<!--#exec cmd="cat /var/www/cgi-bin/tux.txt" -->
+ </pre>
+<BR>
+
+<p>Ascii art from <a href="http://www.ascii-art.de/ascii/jkl/linux.txt">www.ascii-art.de</a>.
+<!--#include virtual="/shared/footer.html" -->

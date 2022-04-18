@@ -1,0 +1,124 @@
+<html>
+<head>
+<title>a sample session of Count-config</title>
+</head>
+<body>
+<h2>A sample <i>Count-config</i> session</h2>
+<hr>
+<pre>
+<b>
+$ Count-config
+    Welcome to the configuration procedure of Count 2.2
+    ---------------------------------------------------
+
+    o You must know where your system keeps CGI programs (cgi-bin directory)
+      It is necessary to generate the install program.
+      This directory must exist. If this directory does not exist, the
+      configuration procedure will Abort!
+
+    o You have to decide a directory, where you will keep all counter related
+      stuff. This directory will have other directories inside. Default
+      values will be supplied, press Return key to accept the default value.
+      Accept the default value, it will make your life much easier.
+
+    During installation, the directories will be created for you
+    if they do not exist and if you have the permission to do so.
+    ++
+Continue [y|n]? y
+
+    You need to enter the full path of the directory where you system
+    keeps the CGI programs. This directory must exist!
+
+*cgi-bin dierctory [/usr/local/etc/httpd/cgi-bin]: 
+
+    You need to enter the base directory of the counter related stuff.
+
+*Base directory [/usr/local/etc/Counter]: 
+
+    You need to enter the directory of the configuration file.
+
+* Config directory [/usr/local/etc/Counter/conf]: 
+
+    You need to enter the name of the configuration file.
+    This file contains the information about
+
+        o if you want to ignore access from certain hosts
+        o host acccess authentication
+
+    You will create this file later by running the program "Gen_conf".
+
+* Name of the configuration file [count.conf]: 
+              
+    You need to enter the directory of the counter data file.
+    
+*Data directory [/usr/local/etc/Counter/data]: 
+
+    Now you need to decide if you will allow the users to create datafiles
+    for them automatically. If you allow, the counter datafile will be
+    created for the user if it does not exist and a pre-determined counter
+    number will be inserted to it. If you do not allow, you have to create
+    the datafile for each user, provided that the data diectory has proper
+    write permission.
+    
+    Allowing users to create datafile is very convenient, as you do not
+    have to be asked all the time when someone decides to use the counter.
+    But the dark side of this is, anyone will be able create datafiles in
+    the data directory. The decision is yours.
+    
+* Allow automatic data file creation [y|n]? n
+
+    Now you need to decide if you want to compile the program in strict
+    mode. If you compile the program in strict mode, the browsers which
+    do not return the environment variable HTTP_REFERER, will not be
+    served, that is no access hit will be recorded, no time or date
+    will be displayed. Instead, a string 888888 will be displayed. There
+    are many browsers including NCSA Mosaic does not return that variable.
+
+    The strict mode ensures that your counter data file can not be messed
+    by accesing the counter remotely from a browser which does not return
+    that variable. This strict mode is experimental at this time!
+
+* Compile in strict mode [y|n]? y
+
+    You need to enter the directory of the Log file.
+
+*Log directory [/usr/local/etc/Counter/Log]: 
+
+    You need to enter the name of the Log file.
+    This file hold the error messages of the counter. It also
+    logs if someone tried to access your counter remotely.
+
+* Name of the log file [Count2.1.log]: 
+
+    Ok, do you want the users to use the file rgb.txt for color name
+    lookup? It is very inefficient to search this file every time the
+    web page is loaded. If you answer yes, the color name
+    will be looked up and used. If you answer no, the color will be
+    looked up but instead of the counter image, the RGB value will
+    be displayed and the user will be asked to use the RGB value
+    instead. This will prevent users to use this file.
+
+* Allow using the rgb.txt file[y|N]:? n
+
+You entered:
+++++++++++++++++++++++++++++++
+CgiBinDir=/usr/local/etc/httpd/cgi-bin
+BaseDir= /usr/local/etc/Counter
+DigitDir= /usr/local/etc/Counter/digits
+ConfDir = /usr/local/etc/Counter/conf
+ConfFile= count.conf
+DataDir= /usr/local/etc/Counter/data
+LogDir= /usr/local/etc/Counter/Log
+LogFile= Count2.1.log
+++++++++++++++++++++++++++++++
+Everything looks ok [y|n]? y
+Great! creating header file config.h
+creating variables template file ./Config.tmpl for the install program..
+now run ./configure
+</b>
+</pre>
+<hr>
+<a href="Count.html#steps"><i>Go Back</i></a>
+</body>
+</html>
+

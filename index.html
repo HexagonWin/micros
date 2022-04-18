@@ -1,0 +1,36 @@
+<HTML>
+ <HEAD>
+  <!-- Addition for "mobile" computing devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <TITLE>MicroS</TITLE>
+ </HEAD>
+
+ <BODY BACKGROUND="/micros.gif" text="#FFFFFF" link="#FFFF00" vlink="#00FFFF" alink="#cdcdcd" BGCOLOR="#313131">
+ <CENTER>
+  <H1>MicroS</H1>
+ </CENTER>
+ <CENTER>Server local date : <!--#echo var="DATE_LOCAL" --></CENTER>
+ <CENTER>Server uptime : <!--#exec cmd="uptime" --></CENTER>
+ <CENTER>Server temperature : <!--#exec cgi="/cgi-bin/temp"-->°C</CENTER>
+ <HR>
+ <H2>Welcome to MicroS!</H2>
+
+ <!-- Menu Area 0 -->
+ <H3>Site Navigation</H3>
+ <A HREF="/owncloud/"><B>ownCloud Connection</B></A><BR>
+ <A HREF="/pages/"><B>Posts & Pages</B></A><BR>
+ <A HREF="info.html"><B>Server statistics & info (WIP)</B></A><BR>
+
+ <!-- Menu Area 1 -->
+ <HR><H3>External Servers</H3>
+ <A HREF="http://192.168.1.1">AliceNET-PCKR (OpenWrt)</A><BR>
+ <A HREF="http://mincrad-pckr">Mincrad-PCKR (Devuan) </A><BR>
+
+ <!-- Footer Area 0 -->
+ <HR>
+ <CENTER><IMG SRC="/apache_pb_dark.gif" ALT="Powered by Apache httpd"></CENTER>
+ <HR>
+ <CENTER>This page has been accessed <!--#exec cgi="/cgi-bin/counter"--> times. </CENTER>
+ <CENTER>This page is last modified <!--#echo var="LAST_MODIFIED" --> </CENTER>
+ </BODY>
+</HTML>

@@ -1,0 +1,1240 @@
+<HTML>
+<HEAD>
+<TITLE>WWW Homepage Access Counter</TITLE>
+</HEAD>
+<BODY bgcolor="#ffffff" link="#ff0000" vlink="#0000ff" alink="#00ff00">
+<H1>WWW Homepage Access Counter and Clock!</H1>
+<h3>Three-in-one (Counter+Clock+Date)</h3>
+<h2>[Count Release 2.2]</h2>
+<P>
+Latest Release: <font color=brown><b>January 16, 1996</b></font>
+<br>
+Initial Release: <font color=brown><b>April 13, 1995</b></font>
+<hr>
+<p>
+<center>
+<img src="/cgi-bin/Count22.cgi?df=muquitc.dat" align=absmiddle>
+<img src="/cgi-bin/Count22.cgi?display=clock" align=absmiddle>
+</center>
+<blockquote>
+If you see the counter, clock or date  image as <b>888888</b>, then you are
+using a browser which
+can not be trusted. For untrusted browsers, no counter hit is recorded, no
+time or date is displayed  and
+the literal digit string is displayed. This feature guarantees that the
+counter can not be accessed remotely to mess up the datafile from a browser
+like yours. I consider a browser untrusted if it does not return the
+environment variable <b>HTTP_REFERER</b>. Some entries in the log file are
+made including the browser type. 
+<p>
+Note, this strict mode of the program is experimental at this time. You
+can decide whether you want this option or not while you run the Count-config
+script.
+</blockquote>
+<hr width=40%>
+<P>
+<dl>
+<dt><h2>Counter announce list</h2>
+<dd>If you want to receive announcement of future release of the counter, send
+mail to:
+<pre>
+    muquit@semcor.com
+</pre>
+<dd>In the Subject line, write (in lower case):
+<pre>
+    subscribe counter
+</pre>
+If anyone want to maintain a mailing list, go for it!
+</dl>
+<h2>
+Table of Contents
+</h2>
+<UL>
+<LI><A HREF="#requ">Requirements</a>
+<LI><A HREF="#intr">Introduction</A>
+<LI><A HREF="#feat">Features</A>
+<LI><A HREF="#digs">Digit styles</a>
+<LI><A HREF="#obta">Obtaining source archive</A>
+<LI><A HREF="#dirs">Directory Structure</A>
+<LI><A HREF="#steps">Steps to compile and install</A>
+<LI><A HREF="#test">Test the program from command line</A>
+<LI><A HREF="#refr">How to call the program from web page?</A>
+<LI><a href="Count2ex.html"> <B>Examples</B></a>
+<LI><A HREF="#count">What is <B>"Counter Terrorism"</B>? And how this program
+handles it?</A>
+<LI><A HREF="#errm">Error messages</A>
+<LI><A HREF="#freqa">Frequently asked questions</A>
+<LI><A HREF="#copyr">Copyright</A>
+<LI><A HREF="#ackn">Acknowledgment</A>
+<LI><A HREF="#auth">Authors</a>
+<LI><A HREF="/~muquit/addurl.html"><B>Please Add your URL!</B></A>
+<LI><A HREF="/~muquit/your_url.html"><B>Web pages using the counter</B></A>
+<LI><A HREF="#hear">I like to hear from you</A>
+<LI><A HREF="#chl">ChangeLog (if you contributed, your name is there)</A>
+</UL>
+<DL>
+<H2>
+<A NAME="requ">
+<DT>Requirements
+</A>
+</H2>
+</DL>
+<P>
+<ul>
+<LI> <B>Unix</B> Operating System.
+<P>
+<b>
+This version (2.2) is not ported to any OS yet. For NT and OS2 port,
+please 
+<a href="/~muquit/Count1.5.html">visit the web page for Count 1.5.</a>
+</b>
+<P>
+<LI> A C compiler (ANSI or non-ANSI).
+<P>
+<LI> You must have <I>root</I> access and basic concept of Unix system
+administration (to install). If your site is configured to run CGI program
+from users' space, then you will not need root access.
+<P>
+<LI> You must run a <I>httpd</I> daemon (tested with NCSA,CERN and APACHE
+httpd). It also works with Netscape Communications Server (reported by
+Scott Barnhill <I>(cosbarnh@ihc.com)</I>.
+However it should work with any unix http server which supports CGI
+programs.  I personally run 
+<A HREF="http://www.apache.org/info.html">APACHE</A> httpd 1.0. I think it's the
+best freely available http server for Unix.
+<P>
+This program is compiled and tested on a Sparc 10 (SunOS 4.1.4) running
+NCSA httpd 1.4 , CERN httpd 3.0, APACHE httpd 1.0, (gcc 2.6.3).
+<P> Count 1.5 runs on:
+<pre>
+    [Linux] | [Solaris 2.x] | [BSDI] | [SGI IRIX 5.3] 
+    [AIX 3.2.5] | [HP-UX-?] | [Ultrix 4.3] | [SCO]
+    [AT&T Unix SVR4] | [DEC Alpha 3000/300L with OSF/1]
+</pre>
+This version should be portable as well.
+</ul>
+<P>
+<dl>
+<h2>
+<A NAME="intr">
+<dt>Introduction
+</A>
+</h2>
+<DD>This is a 
+<A HREF="http://hoohoo.ncsa.uiuc.edu/cgi">CGI</A>
+program to keep record of the raw hits of a web page. It
+generates a GIF image of the number of hits and returns to the browser as
+an in-lined image.  The program also has run-time option not to show the digit
+images, this way the hits can be kept without displaying it. The hits can be
+be monitored without incrementing from a separate page as well.
+Almost all of the
+<A HREF="#feat">features</A> are run-time options.
+The hits are no way accurate. Someone can reload the page again and again to
+increase the hits. However, people like to see how many times someone visited
+their page. The same program can be used to count hits for any number of web
+pages for any number of users. The program can be used to display time or date
+as well. The time or date of any place in the word can be displayed by
+specifying a <b>timezone</b> string for that location. The date can be
+formatted in any combination of <b>MMDDYY</b> (Month-Day-Year).
+This program started as a fun to play
+with CGI programming but due to enormous interest, and feature request, it has
+turned in to the most configurable counter on the web.
+<P>
+The program is distributed as a gzip'd tar archive. If you do not have
+gzip/gunzip, it's available at:
+<a href="ftp://prep.ai.mit.edu/pub/gnu">prep.ai.mit.edu</a>.
+</dl>
+<P>
+<DL>
+<H2>
+<A NAME="feat">
+<DT>Features
+</A>
+</H2>
+</DL>
+<UL type=square>
+<LI> <B> Does not</B> require server-side includes.
+<P>
+<LI> Count 2.0 is backward compatible with Count1.5's URL. One thing to
+note, the keyword <b>wxh</b> has no meaning in Count 2.0. It was used in
+Count 1.5 to specify digit dimensions. In Count 2.0 it is not required,
+because the digit dimensions are determined automatically. Therefore, you
+can use variable width digit images in this version.
+<P>
+<li> Reasonable default for all <b>QUERY_DTRING</b> parameters.
+<p>
+<li> The same program can be used to display time or date.
+<p>
+<li> The time and date of any place in the world can be displayed.
+<p>
+<li> Supports digit images with variable width.
+<p>
+<li> Counter can be displayed without incrementing (for monitoring etc.)
+<p>
+<li> A literal digit string can be displayed.
+<p>
+<li> A random digit string can be displayed.
+<p>
+<li> The color of the digits can be negated.
+<p>
+<li> The counter can be rotated (only integral of 90 degrees, 90,180,270).
+The default rotation is 270 degrees.
+<p>
+<LI> An <B>ornamental 3D frame</B> can be wrapped around the counter image
+with user defined thickness and color at <I>run time</I>.
+<p>
+<li> The frame and transparent color can be a name (e.g. red,green,pink
+etc.). The color can be specified as a hex string, e.g. ffffff, ff0000 etc.
+as well as RGB triplets as before.
+<P>
+<LI> Single program for any number of users for any number of web pages. 
+<P>
+<LI> Any color of the counter image can be made <B>transparent</B> at
+<I>run time</I>.
+<P>
+<LI> Style of digits can be specified at <I>run time</I>.
+<P>
+<LI> Authorized host names can be in the configuration file. To handle
+<A HREF="http://www.netaxs.com/people/pudge/"><B>"Counter Terrorism"</B></a>,
+(looks like this page is dead!) the source code modification is not necessary.
+<P>
+<LI> IP filtering through a configuration file at <I>run time</I>. Any number of
+hosts can be ignored from counting.  Wildcard can be used for IP address in
+the configuration file to ignore hosts from counting.  For example, to
+ignore host in a Class C network, host name can be 192.160.166.*, for Class
+B network, 128.66.*.*, for Class A network, 26.*.*.*. Therefore all hosts
+in a domain can be filtered out this way.  It's a good idea to ignore your
+own host or entire domain. Gen-conf program will let you create the
+configuration fiel interactively.
+<P>
+<LI><b>Advisory data file locking</b>. Data file will not get messed up by
+simultaneous Count.cgi processes. Advisory data file locking is superior to
+ancillary file locking because advisory locking is handled directly by the
+Operating System. 
+<P>
+<LI> Maximum number of digits can be set or counter can be displayed with
+exact number of digits at <I>run time</I>.
+<P>
+<LI> User will be able to specify a start-up counter value at <I>run
+time</I>. This will take effect if the data file does not exist. You will
+be problem by the configuration program if you want this feature or not.
+<P>
+<LI> If you <b>do not want to display the counter</b> but like to keep the
+hits on your page, sh=0 can be defined in the QUERY_STRING at <I>run time</I>.
+It will write a 1x1 transparent GIF image to the browser but the counter in the
+data file will be incremented all right. 
+</UL>
+<p>
+<DL>
+<H2>
+<A NAME="obta">
+<DT>Obtaing source archive
+</A>
+</H2>
+<DD>The source code for this program is distributed via the Web as a gzip
+compressed tar archive.  If you do not have gzip/gunzip, it's available at:
+<a href="ftp://prep.ai.mit.edu/pub/gnu">prep.ai.mit.edu</a>.
+<P>
+<B>
+This machine is getting enormous number of ftp requests lately. Therefore,
+I had to impose a limit of maximum 10 ftp connections at one time. The
+limit will go up to 50 maximum connections at 11:00 PM US Easern Statndard
+Time and go back to 10 maximum connections at 6:00 AM US Eastern Standard Time.
+<P>
+Sorry for the inconvenience!
+</b>
+<P>
+<A HREF="ftp://warm.semcor.com/pub/muquit/wwwcount2.2/">
+<img src="images/transfer.gif" border=0 alt=ftp>
+<i>Download source archive</i></a>
+<P>
+<DD>The file <I>wwwcount2.2.tar.gz</I> is a gzip'ed tar file. To extract the
+distribution, at the shell prompt, type:
+<PRE>
+    gunzip &lt; wwwcount2.2.tar.gz | tar xvf -
+    cd wwwcount2.2
+</PRE>
+The program will compile with ANSI or non-ANSI C compiler.
+</DL>
+<dl>
+<h2>
+<a name="dirs">
+<dt>Directory Structure
+</a>
+</h2>
+<dd>Before going to the configuration procedure, please browse through
+the default directory structure below. It will help you answering questions
+of the configuration script. You can change the name of the directories
+as you please, but keep the directory structure same, it will make your
+life much easier. You do not have to create any of these directories, they
+will be created for you by the Count-install program. Only thing you 
+probably have to create are the individual datafiles (keep reading).
+<p>
+<img src="images/countdst.gif" alt=[image]>
+<p>
+<b>Base Directory</b> is the directory where all the sub-drectories and
+the files releated to counter reside. 
+<p>
+<b>Log Directory</b> is the directory which holds the counter Log file.
+Counter error messages or if someone tries to acces your counter remotely,
+warning message regarding this is written to this file.
+<p>
+<b>conf</b> directory holds the configuraion file for the counter. The
+configuration file holds information in 2 blocks. Each
+block resides between a left and right curly brace. The first block is
+called "ignore hosts" block. "ignore hosts" block defines the IP addresses
+of the hosts to ignore from counting. For example, if a user is running the
+web browser at the host 192.160.166.100 and if 192.160.166.10 is present at
+this block, the counter will be displayed but not incremented. You might
+want to put your own IP address here. The second block is authentication
+block. This block contains the hostnames, IP addresses, aliases for the
+hosts if any. All hosts present on this block will be able to access the
+counter locally or remotely, if others try to access, they will be denied.
+This file is created by the program <b>Gen-conf</b> and can be hand crafted
+later.
+<p>
+<b>data</b> directory holds all the datafiles for the counter. The datafiles
+stores the access counts of web pages. Each page must have a separate
+datafile. The datafile is specified at run-time. You will know about it
+later.
+<p>
+<b>digits</b> directory holds sub-drectories with various styles of GIF
+digits. For example, <b>A</b> sub-directory holds the green led digits.
+The sub-directories have GIF digit files named zero.gif, one.gif...nine.gif.
+you will know about it later.
+<p>
+<b>rgb.txt</b> file is used to convert a color name (for example, cyan) to the
+appropriate red, green and blue color component. This file came from 
+X consortium and supplied with the distribution. You will know about the
+file later.
+</dl>
+<dl>
+<a NAME="digs">
+<H2><DT>Digit Styles</H2>
+</a>
+<DD>The digits used in this program are individual GIF files. This gives 
+flexibility of using digits of your choice. The digit images are named as
+zero.gif, one.gif,.... nine.gif. At run-time, simply the directory of the
+images is specified to use a different style. 
+Therefore, a single program can generate digits of various styles.
+Here are the supplied digit styles.
+<P>
+<table border=2>
+<tr>
+    <th>
+        Style A
+     </th>
+     <td>
+        <img src="images/styleA.gif" align=absmiddle alt=styleA>
+     </td>
+     <td>
+     designed by me (digits/A)<br>
+     can be used for clock or date.
+     </td>
+</tr>
+<tr>
+    <th>
+        Style B
+    </th>
+    <td>
+        <img src="images/styleB.gif" align=absmiddle alt=styleB>
+    </td>
+    <td>
+    Borrowed from
+<a HREF="http://www.eeb.ele.tue.nl/software/counter.html">HTML-access counter</A>.
+(digits/B)
+    </td>
+</tr>
+<tr>
+    <th>
+        Style C
+    </th>
+    <td>
+        <img src="images/styleC.gif" align=absmiddle alt=styleC>
+    </td>
+    <td>
+    designed by <I>benjamin@pop3.oro.net</i>
+    (digits/C)
+    </td>
+</tr>
+<tr>
+    <th>
+        Style D
+    </th>
+    <td>
+        <img src="images/styleD.gif" align=abdmiddle alt=styleD>
+    </td>
+    <td>
+    designed by me (digits/D)<br>
+     can be used for clock or date.
+    </td>
+</tr>
+<tr>
+    <th>
+        Style E
+    </th>
+    <td>
+        <img src="images/styleE.gif" align=abdmiddle alt=styleE>
+    </td>
+    <td>
+    designed by me (digits/E)<br>
+    can be used for clock or date.
+    </td>
+</table>
+<p>
+A suggested use of style E is to make the white color transparent (you will
+know about transparency later). 
+<P>
+<B>For a huge collection of GIF digits, check out the </B>
+<A HREF="http://cervantes.comptons.com/digits/digits.htm"><I>Digit Mania</I></A> page.
+<P>
+This program will work with any digits from the Digit Mania page.
+To use those digits, create subdirectories say, F,G, H etc. inside the
+digits directory and rename the images to zero.gif, one.gif..nine.gif.
+To use those digits for clock or time, make sure you have or create 
+am.gif, pm.gif, colon.gif and dash.gif.
+</dl>
+<DL>
+<H2>
+<A NAME="steps">
+<DT>Steps to compile and install
+</A>
+</h2>
+<dd>In the current release of the counter, there should not be any need for
+hand editing any files. Several configuration scripts are supplied to automate
+the whole process. I am giving a little description about the scripts just
+may be you are curious:
+<p>
+<i>Count-config</i>
+<br>
+script to generate the header file config.h, a variable
+template file for install program.
+<p>
+<i>configrue</i>
+<br>
+script to generate correct Makefiles for any Unix system.
+<p>
+<i>Gen-conf</i>
+<br>
+script to generate the configuration file.
+<p>
+<i>Count-install</i>
+<br>
+script to install the Count binary Count.cgi, digit images, configuration
+file and the rgb color name database to the correct places.
+<p>
+
+Now at the shell prompt (shell prompt is where you type ls, read your mails
+etc.), type the following commands in the described order and press Return
+key:
+<p>
+<dl>
+<dt><b>./Count-config</b>
+<dd>
+The script will ask questions with brief description. Answer them.
+Look at the directory structure image to better understand the questions.
+<br>
+<a href="c-c.html"><B>Look at a sample session</B></a>
+<p>
+</dl>
+<dl>
+<dt><b>./configure</b>
+<dd>
+The script will not ask any questions, but you will see the informational
+messages about your system. It will create the Makefiles (Makefile and
+combine/Makefile) for your system.
+<br>
+<a href="confi.html"><B>Look at a sample session</B></a>
+</dl>
+<p>
+<dl>
+<dt><b>make clean</b> (<i>not needed if you compiling the first time</i>)
+<br>
+<b>make</b>
+<dd> Compilation will start if the previous two scripts completed successfully.
+It will take some time. If compilation succeeds, go to the next step.
+</dl>
+<p>
+<dl>
+<dt><b>./Gen-conf</b>
+<dd> This script will ask you questions about your system. Answer them.
+This process will create the configuraion file for the counter. 
+<br>
+<a href="gen-c.html"><B>Look at a sample session</B></a>
+</dl>
+<p>
+<dl>
+<dt><b>./Count-install</b>
+<dd>This is the final step. This scripts will install the necessary things
+for the counter in your system. You will need root access if you are
+installing it an area where root access is needed. This program will ask you
+couple of questions.
+</dl>
+<p>
+If you finished all the above steps successfully, you are ready to test
+the counter. Go to the next section.
+</DL>
+<P>
+<DL>
+<H2>
+<A NAME="test">
+<DT>Test the program from command line
+</A>
+</H2>
+<DD> A shell script is supplied for testing the counter. the name of this
+script is <I>testcount-sh</I>. Look at this script, you might need to change
+certain things.  Please read the comments in this script for understanding the
+various run-time options of the counter. You'll also know in detail about
+the options in the section
+<A HREF="#refr">How to call the program</a>.When you are happy with
+everything, save it and at the shell prompt
+type:
+<PRE>
+    ./testcount-sh
+</PRE>
+</DL>
+<dL>
+<h2>
+<A NAME="refr">
+<dt>How to call the program?
+</A>
+</h2>
+<dd> You can refer to the program from web page like this:
+<P>
+<b>
+&lt;img src="/cgi-bin/Count.cgi?df=sample.dat" align=absmiddle&gt;
+</b>
+<P>
+<DD> The string between ? and " is called the QUERY_STRING. Make sure there is
+no newlines in the &lt;img src= line and no space in the QUERY_STRING. 
+Here in, <b>df=sample.dat</b>, <b>df</b> means datafile and <b>sample.dat</b>
+is the counter datafile. The counter stores the hits in this file. This
+datafile is suppiled. Now, do you remember what was the answer to the question
+for the script <b>Count-config</b>:
+<p>
+<b>
+* Allow automatic data file creation [y|n]?
+</b>
+<p>
+If you answered yes, you can specify a datafile with <b>df</b> like
+<b>df=count.dat</b>. The file count.dat will be created for you if the 
+permision to the data directory is correct. 
+<p>
+If you answered no, you have to create this file in the data directory.
+cd to the data directory and type:
+<pre>
+    echo 1 > count.dat
+</pre>
+<p>
+<dd>The counter program has lots of options, you can make it work and look the
+way you desire. In the query string, you can use the options described
+in the table below. The options can be separated by a | or a &. You can
+use either one or both. Here is an example:
+<b>
+<pre>
+&lt;img src="/cgi-bin/Count.cgi?ft=T&frgb=gold|df=sample.dat" align=absmiddle&gt;
+</pre>
+</b>
+<p>The options can be in any order and not case sensitive.
+<p>
+Anyway, look at this
+<a href="Count2ex.html"> <B>Example Page</B></a>
+you will get the picture.
+<p>
+<h3>Counter Options</h3>
+<b>[I stole it from  <A href="http://eies.njit.edu/~kevin/">Kevin's
+page</a> :) ] </b>
+<P>
+<table border>
+    <tr>
+        <th>Parameter</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default</th>
+    </tr>
+    <tr>
+        <td align=center>
+            display=<b>X</b>
+        </td>
+        <td>
+            Specifies what to display.
+        </td>
+        <td>
+            A valid string can be specified with <b>display= </b> parameter
+            to display counter, clock or date. 
+            The valid value for the string parameter <b>X</b> is
+            <b>counter</b>,<b>clock</b> or <b>date</b>
+            For counter, this parameter is not need as <b>counter</b> is 
+            the default display type.
+            <p>
+            <font color=brown><blink>Note: clock and date will only work with
+            digit style A, D and E.</blink> If you want to use a different style
+            of digits, you have to design the <b>dash.gif,
+            am.gif, pm.gif</b> and <b>colon.gif</b>.
+            </font>
+        </td>
+        <td align=center>
+            display=<b>counter</b>
+        </td>
+    </tr>
+    <tr>
+        <td align=center>
+            timezone=<b>X</b>
+        </td>
+        <td>
+            Specifies timezone.
+        </td>
+        <td>
+        The parameter <b>timezone=</b> is only significant with
+        <b>display=clock</b> or <b>display=date</b>. Use this parameter
+        if you want to display time or date of another timezone. For example,
+        for 
+        eastern time with daylight saving time, <b>timezone=EST5EDT</b>,
+        central time with daylight saving time, <b>timezone=CST6CDT</b>,
+        mountain time with daylight saving time, <b>timezone=MST7MDT</b>,
+        pacific time with daylight saving time, <b>timezone=PST8PDT</b>.
+        for GMT, <b>timezone=GMT</b>.
+        An offset from GMT can be used as well, <b>timezone=GMT+6</b>.
+        Note, the GMT offset method may not work properly with SYSV type
+        OS. Look at the manpage for ctime, localtime for your machine.
+        <p>
+        If the clock displays your local time wrong, you must specify 
+        your timezone
+        with that parameter in order to display the correct time.
+        </td>
+        <td align=center>
+            None.
+        </td>
+    </tr>
+    <tr>
+        <td align=center>
+            dformat=<b>X</b>
+        </td>
+        <td>
+            Specifies date format.
+        </td>
+        <td>
+            This parameter is only significant with <b>display=date</b>.
+            The valid value for the string parameter <b>X</b> is any 
+            combination of <b>MMDDYY</b> (Month-Day-Year). For example,
+            <b>dformat=ddmmyy</b>, <b>dformat=YYMMDD</b>.
+        </td>
+        <td>
+            dformat=<b>MMDDYY</b>
+        </td>
+    </tr>
+    <tr>
+        <td align=center>
+            ft=<b>X</b>
+        </td>
+        <td>
+            Frame Thickness
+        </td>
+        <td> 
+            You can wrap the counter in an ornamental frame of X pixels
+            thick.  Use 0 for no frame. Values over 5 make a nice 3-D effect.
+        </td>
+        <td align=center>
+            ft=6
+        </td>
+    </tr>
+    <tr>
+        <td align=center>
+            frgb=<b>R;G;B</b>
+        </td>
+        <td>
+            Frame Color
+        </td> 
+        <td>
+            Specifies the color of the frame in RGB (red/green/blue)
+            format. Each color component, R, G, and B is specified as a
+            value between 0 and 255. If you use ft= without a frgb=
+            param, the default color is used. 
+        <P>
+            If you specify a frgb= without a ft=, then the frame
+            thickness defaults to 5. All the examples show ft=5. 
+            The color can be specified as hex string or a name.
+            <b>Do not use a # before the hex string as Netscape.</b>
+            For example, if you want to specify white in hex, you do
+            frgb=ffffff.
+            Look at the
+            <a href="rgb.txt.html">color name mapping database</a> for 
+            some hints.
+        </td>
+        <td align=center>
+            frgb=100;139;216
+            or<br>
+            frgb=648bd8
+        </td>
+    </tr>
+    <tr>
+        <td align=center>
+            tr=<b>B</b>
+        </td>
+        <td>
+            Transparency On/Off
+        </td>
+        <td>
+             You can specify if your counter image will have a transparent
+             color with the Boolean B. So tr=Y means there will be a
+             transparent color; and tr=N means there will not. It does not
+             matter if the GIF files used for the digits are "transparent";
+             you must specify explicitly which color to
+             make transparent. If you specify a trgb=, then you do not need
+             to specify tr=Y. Valid values for B are Y, N, T, F, 1, or 0. 
+        </td>
+        <td align=center>
+            tr=N
+            <br>
+            <i>No Transparency</i>
+        </td>
+    </tr>
+    <tr>
+        <td align=center>
+            md=<b>X</b>
+        </td>
+        <td>
+            Max Digits
+        </td>
+        <td>
+            Defines maximum number of digits to display. Any value between
+            5 and 10 inclusive are permitted. Padding with leading zeros is
+            automatically done for you; longer counts are truncated to the
+            given <b>X</b>. 
+        </td>
+        <td align=center>
+            md=<b>6</b>
+            <br>
+            <i>Without padding</i>
+        </td>
+    </tr>
+    <tr>
+        <td align=center>
+            pad=<b>B</b>
+        </td>
+        <td>
+            Padding with 0's
+        </td>
+        <td>
+            Turn padding on/off in conjunction with md= setting. Valid
+            values for the Boolean parameter B are Y, N, T, F, 1, or 0.
+        </td>
+        <td align=center>
+            pad=<b>N</b>
+            <br>
+            <i>Without specification of a md=<b>value</b></i>
+            <p>
+            pad=<b>Y</b><br>
+            <i>With specification of a md=<b>value</b></i>
+        </td>
+    </tr>
+    <tr>
+        <td align=center>
+            dd=<b>A</b>
+        </td>
+        <td>
+            Digit Directory
+        </td>
+        <td>
+            Denotes directory of a specific styles of digits. Four styles
+            of digits are suppiled. They are kept at the directories A,B,C
+            and D respectively. Visit the 
+<A HREF="http://cervantes.comptons.com/digits/digits.htm">digit mania
+page</a> for other styles of digits.
+        </td>
+        <td align=center>
+            dd=<b>A</b>
+            <br>
+            <i>My green led digits</i>
+        </td>
+    </tr>
+    <tr>
+        <td align=center>
+            st=<b>X</b>
+        </td>
+        <td>
+            Start Count
+        </td>
+        <td>
+            Used to set the initial value of the counter to some number X.
+            This is only valid if you decided to allow automatic datafile
+            creation.  This is a bad practice to compile with this option,
+            however it makes site maintaining easier. 
+            Note that this parameter has no effect if the datafile alreay
+            exist. If you want to change the counter value in a existing
+            datafile, hand edit the file. The minimum value for st is 1.
+        </td>
+        <td align=center>
+            st=<b>1</b><br>
+            <i>Count starts at 1</i>
+        </td>
+    </tr>
+    <tr>
+        <td align=center>
+            sh=<b>B</b>
+        </td>
+        <td>
+            Show digits
+        </td>
+        <td>
+            Used to turn display of digits on or off according to the
+            Boolean B.  When sh=T, counter will be displayed and incremented,
+            this is the default behavior.
+           <p> 
+            If sh=F no digits will show, but the
+            counter will still increment; instead of digits a transparent
+            1x1 GIF is displayed. Valid values for the Boolean parameter B
+            are Y, N, T, F, 1, or 0
+        </td>
+        <td align=center>
+            sh=<b>Y</b>
+        </td>
+    </tr>
+    <tr>
+        <td align=center>
+            df=<b>data_file</b>
+        </td>
+        <td>
+            Datafile to store count
+        </td>
+        <td>
+            Specifies the name of the file for storing the count in. The
+            file must be allocated to you as was mentioned in the
+            "Authorizations" section above.  You can use df=random
+            to diaplay a random number.
+            <p>
+            One special use of the parameter is df=RANDOM.  This returns a
+            random number using the fractional portion of the host's time
+            of day clock as a seed for the generator. Unlike all other
+            WWWcounter parameters, the file name provided is
+            case-sensitive, except for the value random. Or Random, or
+            rANDOM, etc. 
+        </td>
+        <td align=center>
+            df=<b>random</b>
+            <br>
+            <i>if no datafile is specified</i>
+        </td>
+    </tr>
+    <tr>
+        <td align=center>
+            incr=<b>B</B>
+        </td>
+        <td>
+            Increment Count
+        </td>
+        <td>
+            Makes it possible to display the current count without
+            incrementing the count. This can be used to examine the count
+            for reporting or other purposes without adding to the count.
+            Valid values for the Boolean parameter B are Y, N, T, F, 1, or 0. 
+            <p>
+        </td>
+        <td align=center>
+            incr=<b>T</b>
+            <br>
+            <i>Increment the counter on each invocation</i>
+        </td>
+    </tr>
+    <tr>
+        <td align=center>
+            lit=<b>X</b>
+        </td>
+        <td>
+            Display literal
+        </td>
+        <td>
+            Makes it possible to display a given, predetermined value.
+            Valid values for the string X are digits.
+        </td>
+        <td align=center>
+            <i>None</i>
+        </td>
+    </tr>
+    <tr>
+        <td align=center>
+            negate=<b>B</b>
+        </td>
+        <td>
+            Negate the color
+        </td>
+        <td>
+            Makes it possible to negate the color of the counter digits.
+            Note that the Frame is exempted from negating.
+            Valid values for the Boolean parameter B are Y, N, T, F, 1, or 0. 
+        </td>
+        <td align=center>
+            negate=<b>F</b>
+            <br>
+            <i>Do not negate</i>
+        </td>
+    </tr>
+    <tr>
+        <td align=center>
+            degrees=<b>X</b>
+        </td>
+        <td>
+           Rotate X degrees 
+        </td>
+        <td>
+            Makes it possible to rotate the counter image X degree. The
+            possible values of X is 90, 180, 270 and 360. Note 360 is
+            meaningless as the counter will come back to the original 0
+            degree.
+        </td>
+        <td align=center>
+            degrees=<b>270</b>
+            <br>
+            With rotate=Y and without degrees=X
+            <br>
+            <i>rotate 270 degreess clockwise</i>
+        </td>
+    </tr>
+    <tr>
+        <td align=center>
+            rotate=<b>B</b>
+        </td>
+        <td>
+            Rotate On/Off
+        </td>
+        <td>
+            The Boolean value B turns on or off rotating. If you use
+            degrees=  settting, rotate is not needed.
+            Valid values for the Boolean parameter B are Y, N, T, F, 1, or 0. 
+        </td>
+        <td align=center>
+            rotate=<b>F</b>
+            <br>
+            <i>Do not rotate</i>
+        </td>
+    </tr>
+</table>
+</dl>
+<DL>
+<H2>
+<A NAME="count">
+<DT>What is <B>"Counter Terrorism"</B>? And how this program handles it?
+</A>
+</H2>
+<DD>If you do not know, in most cases any CGI program can be referred
+remotely. For example, a CGI program x.cgi (say it returns an in-lined image) 
+in foo.com can be called from foobar.com as follows:
+<PRE>
+    &lt;img src="http://foo.com/cgi-bin/x.cgi"&gt;
+</PRE>
+That is, someone somewhere on the  Internet can refer to your counter
+and increase the hits and you will not have a clue. You will get the false
+impression of many people visiting your page. You can look at the so called
+<A HREF="http://www.netaxs.com/people/pudge/"><B>"Counter Terrorist"</B></A>
+(looks like this page is dead!) page for demo.
+<P>
+So how this program handles this? The counter program tries to
+get a environment variable called <B>HTTP_REFERER</B> for remote
+referer.  It is necessary to check this variable because when someone
+remotely refer to a CGI program to your machine, the variable
+<B>REMOTE_ADDR</B> will be the address of your machine. So checking
+<B>REMOTE_ADDR</B> will not work. Most of the moderm browsers returns the
+env variable <B>HTTP_REFERER</B>.  If the browser does not return the
+variable, counter will be served anyway.  But you are not lost totally
+here.  If you decided to ignore count for your host running httpd, the
+counter will be served but it will not be increased.  So, I suggest ignore
+count for your own host. <b>Gen-conf</b> program is used for generating the
+configuration file. The second block is the authentication block, that is
+hostname in this block will be able to access the counter remotely as
+mentioned about.
+<p>
+Note this is a simple solution of a complex problem. It is not full proof.
+Your feedback is always welcome in this regard.
+</DL>
+<DL>
+<H2>
+<A NAME="errm">
+<DT>Error Messages
+</A>
+</H2>
+<DD>Count will try to return an image in any event. That is, even if it
+fails for some reason, it will write the error messages in GIF format.
+The text error messages also will be written to the counter log file defined
+with <B>LogFile</B> in the directory defined with <B>LogDir</B> in the
+config.h file. The program <b>Count-conf</b> asked about these if you remember.
+<P>
+<DD>If you see any of these images, please check the Counter log file
+you defined with <B>LogDir</B> and <B>LogFile</B>. If the program could not
+create the log file, it will write the error messages to stderr. In that case
+if you configured your httpd server to write the log to a file, the error
+messages will the written to this file.
+</DL>
+<P>
+<DL>
+<H2>
+<A NAME="freqa">
+<DT>Frequently Asked Questions
+</A>
+</H2>
+</DL>
+<OL>
+<LI><A HREF="http://www.boutell.com/faq/cgiprob.htm">
+<B>My CGI scripts don't work. What's wrong?</B></A>
+</OL>
+<DL>
+<H2>
+<A NAME="copyr">
+<DT>Copyright
+</A>
+</H2>
+<DD><B>Copyright 1995 by Muhammad A Muquit. Permission to use, copy, modify
+and sell this program for any purpose is hereby granted without fee,
+provided that this copyright notice appear in all copies and that both that
+copyright notice and this permission notice appear in supporting
+documentation, and the author's name not be used in advertising or publicity
+pertaining to distribution of the software without specific written prior
+permision.  If the program is included in a book, publication or
+software distribution media for sale, the author must be notified about it.
+<P>
+THIS PROGRAM IS PROVIDED "AS IS" WITHOUT EXPRESS OR IMPLIED WARRANTY.
+THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
+ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL THE
+AUTHOR Muhammad A. Muquit BE LIABLE FOR ANY SPECIAL, INDIRECT OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE,
+DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+</B>.
+<P>
+<I>
+Note: This program is developed in my own time. My employer
+<a href="http://www.semcor.com/">SEMCOR, Inc.</A> has nothing to do with it.
+</I>
+</DL>
+<DL>
+<H2>
+<A NAME="ackn">
+<DT>Acknowledgment
+</A>
+</H2>
+<DD>Thanks to <I>John Cristy</I> for <A
+HREF="http://www.wizards.dupont.com/cristy/ImageMagick.html">ImageMagick</A>.
+I took many routines from ImageMagick for the GIF image combining library.
+I borrowed the font array and some code from 
+<a href="http://siva.cshl.org/gd/gd.html">gd library</a>. Thanks to 
+<a href="http://sunsite.unc.edu/boutell/index.html"><I>Tom Boutell</I></a>.
+Thanks to <A href="http://eies.njit.edu/~kevin/">Kevin J. Walsh</a>. Without
+Kevin this release would not happen.
+Thanks to all of you who showed interest in the counter program. I had fun
+writing it.
+</DL>
+<dl>
+<h2>
+<a name="auth">
+<dt>Authors
+</a>
+</h2>
+<DD>
+<a href="index.html"><i>Muhammad A Muquit</i></a> and<br>
+<A href="http://eies.njit.edu/~kevin/"><i>Kevin J. Walsh</i></a>
+</dl>
+<DL>
+<H2>
+<A NAME="hear">
+<DT>I like to hear from you
+</A>
+</h2>
+<DD>If you are using this program, I like to hear from you. 
+Please add your web page URL to the database
+<A HREF="/~muquit/addurl.html"><B>via this form</B></A>. 
+<A HREF="mailto:muquit@semcor.com"><I>You can drop me a
+line if you like</I></A>. If you are having any problem with the program,
+please let me know as well.  Feel free to send any suggestion. If you think
+that the program is cool, <B>please consider sending me a picture postcard
+of the area where you live</B>. Thanks to all of you who sent me the nice
+postcards.  I really appreciate it.
+<P>
+I receive enormous number of mails.  Please understand that no way I can answer
+all of the mails I receive, although eventually I read all the mails.
+If you do not hear from me in 3 days, please resend the mail again.
+<P>
+<PRE>
+    Muhammad A Muquit
+    SEMCOR, Inc.
+    65 West Street Road
+    Warminster, PA 18974
+    USA
+</PRE>
+Thanks.
+<P>
+Enjoy!
+</dl>
+<DL>
+<H2>
+<A NAME="chl">
+<DT>ChangeLog
+</A>
+</H2>
+<DD> If you contributed or suggested something and if your name is not
+here, please drop me a line and get the credit.
+<p>
+<dd><b>Count 2.2</b> (<i>January 16, 1996</i>)
+<ul>
+<p>
+<li> There was a logic problem in determining AM and PM. Thanks to
+(<i>stephen@txdirect.net</i>). 01/18/96
+<p>
+<li> Strict mode (detect if browser returns HTTP_REFERER) is a configurable
+option.
+<p>
+<li> An error was in the code related to ACCESS_AUTH directive. Reported
+by <i>c2dhanle@CompApp.DCU.IE</i>
+</ul>
+<p>
+<dd><b>Count 2.1</b> (<i>January 15, 1996</i>)
+<ul TYPE=disc>
+<li> The bug related to st parameter is fixed.
+<p>
+<li> The same program an be used to display time or date.
+</ul>
+<P>
+<dd><b>Count 2.0</b> (<i>December 27, 1995)</i>
+<ul type=disc>
+<LI> Configuration scripts. You should not to need to hand edit any file in
+order to compile and install the counter.
+<p>
+<LI>Reasonable defaults for all QUERY_STRING parameters.
+<br>
+<b>Implemented by <A href="http://eies.njit.edu/~kevin/">Kevin J. Walsh</a></b>
+<P>
+<LI>QUERY_STRING parameters can be in any order and not case sensitive.
+<br>
+<b>Implemented by <A href="http://eies.njit.edu/~kevin/">Kevin J. Walsh</a></b>
+<P>
+<LI>Counter can be displayed without incrementing.
+<br>
+<b>Implemented by <A href="http://eies.njit.edu/~kevin/">Kevin J. Walsh</a></b>
+<P>
+<LI>A literal digit string can be displayed.
+<br>
+<b>Implemented by <A href="http://eies.njit.edu/~kevin/">Kevin J. Walsh</a></b>
+<P>
+<LI>A random digit string can be displayed as counter.
+<br>
+<b>Implemented by <A href="http://eies.njit.edu/~kevin/">Kevin J. Walsh</a></b>
+<P>
+<LI>Colors can be negated, that is counter can be displayed as a negative
+copy.
+<P>
+<LI>The counter can be rotated (integral of 90 degrees, 90,180,270 degrees).
+<P>
+<LI>No need to specify width and height of digit images.
+<P>
+<LI>The frame and transparent color can be a name (e.g. red, violet etc),
+a hex string (e.g. ffffff, ff00ff, dddddd etc.)
+as well as RGB triplets (e.g. 160;255;0, 0;0;0 etc)  as before. 
+<br>
+<b>Implemented by <A href="http://eies.njit.edu/~kevin/">Kevin J. Walsh</a></b>
+<P>
+<LI> The counter can be called as simply as:
+<PRE>
+    &lt;img src="/cgi-bin/Count.cgi?df=count.dat"&gt;
+</PRE>
+or as complex as before. or any attribute can be set independently.
+</UL>
+<P>
+<dd><b>Count 2.0b</b>
+<UL type=disc>
+<li> in IRIX 5.3 11091810 IP12 mips, if you get an error like
+<pre>
+        : libCombine.a
+    : - Too many arguments
+    *** Error code 1 (bu21)
+    *** Error code 1 (bu21)
+</pre>
+    in combine/Makefile, remove the line
+    <p>
+    $(RANLIB) $@
+    <p>
+    (Thanks to <i>savarro@CENTRCN.UMontreal.CA</i>).
+    <br>(12/07/95).
+<p>
+<li> Log directory was not created by the Count-install script.
+    (Thanks to <i>robertg@zoom.com</i>). (12/07/95).
+</ul>
+<P>
+Thanks to <A HREF="http://www.microserve.net/~john/">John Anthony Ruchak</a>
+for beta testing Count 1.5.
+<P>
+    <DD><B>Count 1.5</B>
+    <I>(September 11, 1995, 9:00 PM EDT)</I>
+<UL type=square>
+<LI>can be compiled with -DALLOW_FILE_CREATION option. if compiled with
+      this option, the data file will be created if it does not exist in
+      the directory defined with DataDir and the value defined with st in
+      QUERY_STRING will be written to it.
+      (suggested by
+      <A HREF="http://www.microserve.net/~john/">John Anthony Ruchak</a>.
+<P>
+    <I>(September 10, 1995)</I>
+<LI>Advisory data file locking. Datafile will not get messed up by
+      simultaneous Count.cgi processes.
+<P>
+<LI>Error messages are converted directly from string to image. No
+      included GIF images are needed, will be beneficial for system with
+      low memory. I borrowed the font array and some code from 
+      <A HREF="http://siva.cshl.org/gd/gd.html">gd library</a>.
+      Thanks to 
+      <A HREF="http://sunsite.unc.edu/boutell/index.html">Tom Boutell</a>
+<P>
+<LI>Authorized host names can be in configuration file. To handle
+      "Counter Terrorism", the source code modification is not
+      necessary.
+<P>
+<LI>The hits on the web page can be counted without displaying the digits.
+suggested by <A HREf="http://macul.ciencias.uchile.cl/~andress">Andres
+Sepulveda</A>.
+</UL>
+<P>
+    <DD><B>Count 1.4</B>
+    <I>(August 27, 1995)</I>
+<P>
+<UL>
+<LI>wigingto@umr.edu suggested to use HTTP_REFERER for checking remote
+      access to the counter.
+<P>
+<LI>randerso@bite.db.uth.tmc.edu sent some code segment to account for
+      port numbers at the end of a referer URL.
+<P>
+<LI>Ornamental frame with user defined color and thickness on the fly.
+<P>
+<LI>maximum number of digits can be &gt;= 5 or &lt;= 10 (if you use md)
+      (on the fly).
+<P>
+<LI>if pad=0, the exact number of digits will be displayed without left
+      padding with zeros (on the fly).
+<P>
+<LI>Any color of the digits can be made transparent on the fly.
+<P>
+<LI>Digit style can be provied on the fly.
+<P>
+<LI>sdw@iadfw.net suggested to keep configuration file, data file, digits,
+      log file in separate directories. It will fix a security hole.
+<P>
+<LI>datafile can be edited.
+</UL>
+<P>
+    <DD><B>Count 1.3</B>
+<UL>
+<P>
+<LI>Hardcoded the base directory of the counter data files.  This will fix
+      a security hole. Thanks to carsten@group.com
+</UL>
+</DL>
+<HR>
+<ADDRESS><A HREF="mailto:muquit@semcor.com">muquit@semcor.com</A></ADDRESS>
+<P>
+<EM>Last Update: January 18, 1996</EM>
+<P>
+Today: <img src="/cgi-bin/Count22.cgi?display=date" align=absmiddle>
+<p>
+<A HREF="http://warm.semcor.com/~muquit/index.html">
+<IMG SRC="http://warm.semcor.com/~muquit/images/Up.gif" alt=[HOME]>
+Home Page</A>  
+</BODY>
+</HTML>
